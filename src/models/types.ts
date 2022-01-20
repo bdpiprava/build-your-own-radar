@@ -16,3 +16,8 @@ export interface BlipJSON {
     new: boolean;
     description: string;
 }
+
+export interface Point {
+    x: number,
+    y: number
+}

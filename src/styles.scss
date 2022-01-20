@@ -1,9 +1,10 @@
 .plane {
-  width: 700px;
-  height: 700px;
+  width: 1366px;
+  height: 1366px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  border: 1px solid black;
 }
 
 .plane .quadrant {
@@ -16,7 +17,7 @@
 }
 
 path {
-  fill: aquamarine;
+  stroke: #ddd;
 }
 
 .plane .quadrant, .title {
