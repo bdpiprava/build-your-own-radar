@@ -1,0 +1,24 @@
+.plane {
+  width: 700px;
+  height: 700px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.plane .quadrant {
+  outline: 1px solid #ccc;
+  display: flex;
+  margin: 20px;
+  flex-basis: calc(50% - 40px);
+  justify-content: center;
+  flex-direction: column;
+}
+
+path {
+  fill: aquamarine;
+}
+
+.plane .quadrant, .title {
+
+}
