@@ -62,25 +62,50 @@ export class Renderer {
     }
 
     private renderRadar() {
-        const plane = this.root.append('svg')
-        plane.attr("class", 'plane')
+        const plane = this.root.append('svg');
+        plane.attr("class", 'plane');
+        this.renderQuadrantsBackground(plane);
+        this.renderRings(plane);
+        this.renderQuadrantsTitle();
+        this.renderRingsTitle(plane);
         
-        const pos = this.maxRadius + this.margin * 2;
-        new Array<Point>(
-            {x: pos, y: 0},
-            {x: 0, y: 0},
-            {x: 0, y: pos},
-            {x: pos, y: pos},
-        ).forEach((p: Point) => {
-            plane.append('rect')
-                .attr('x', p.x)
-                .attr('y', p.y)
-                .attr('width', this.maxRadius - this.margin)
-                .attr('height', this.maxRadius - this.margin)
-                .attr('fill', '#eef1f3')
+    }
+
+    private renderRingsTitle(plane: any) {
+        this.rings.forEach((r: string, i: number) => {
+            plane.append('text')
+                .attr('class', 'line-text')
+                .attr('y', this.maxRadius + 5)
+                .attr('x', this.maxRadius + this.margin * 2 + (this.ringRadius(i) + this.ringRadius(i)) / 2)
+                .attr('text-anchor', 'start')
+                .text(r);
+
+            plane.append('text')
+                .attr('class', 'line-text')
+                .attr('y', this.maxRadius + 5)
+                .attr('x', (this.maxRadius - this.margin * 2 - (this.ringRadius(i) + this.ringRadius(i)) / 2))
+                .attr('text-anchor', 'end')
+                .text(r);
+        });
+    }
+
+    private renderQuadrantsTitle() {
+        this.radar.quadrants.forEach((q: QuadrantJSON, i: number) => {
+            const qr = d3.selectAll(`.${this.sanitize(q.name.toLowerCase())}`)
+            const text = qr.append('text')
+            text.text(q.name)
+
+            const pos = this.maxRadius - this.margin - 20;
+            const x = pos * (i == 0 || i == 3 ? 1 : -1)
+            const y = pos * (i < 2 ? -1 : 1)
+
+            text.attr('y', y)
+            text.attr('x', x)
+            text.attr('style', i == 0 || i == 3 ? 'text-anchor: end;' : '')
         })
+    }
 
-
+    private renderRings(plane: any) {
         this.radar.quadrants.forEach((q: QuadrantJSON, i: number) => {
             const xSign = i == 0 || i == 3 ? 1 : -1
             const ySign = i < 2 ? -1 : 1
@@ -98,21 +123,26 @@ export class Renderer {
                     .attr('d', this.ringPath(i, ri))
                     .attr('class', `ring-arc-${i}`)
                     .attr('fill', `#fff`)
+                    .attr('stroke', `#333`)
+                    .attr('stroke-width', `2`)
             })
         })
+    }
 
-        this.radar.quadrants.forEach((q: QuadrantJSON, i: number) => {
-            const qr = d3.selectAll(`.${this.sanitize(q.name.toLowerCase())}`)
-            const text = qr.append('text')
-            text.text(q.name)
-
-            const pos = this.maxRadius - this.margin - 20;
-            const x = pos * (i == 0 || i == 3 ? 1 : -1)
-            const y = pos * (i < 2 ? -1 : 1)
-
-            text.attr('y', y)
-            text.attr('x', x)
-            text.attr('style', i == 0 || i == 3 ? 'text-anchor: end;' : '')
+    private renderQuadrantsBackground(plane: any) {
+        const pos = this.maxRadius + this.margin * 2;
+        new Array<Point>(
+            {x: pos, y: 0},
+            {x: 0, y: 0},
+            {x: 0, y: pos},
+            {x: pos, y: pos},
+        ).forEach((p: Point) => {
+            plane.append('rect')
+                .attr('x', p.x)
+                .attr('y', p.y)
+                .attr('width', this.maxRadius - this.margin)
+                .attr('height', this.maxRadius - this.margin)
+                .attr('fill', '#eef1f3')
         })
     }
 
