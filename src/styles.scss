@@ -1,14 +1,25 @@
+.body {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.page {
+  background: #fff;
+  align-self: center;
+  width: 1240px;
+  height: 1754px;
+  justify-content: center;
+  display: flex;
+}
+
 .plane {
-  width: 1366px;
-  height: 1366px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  border: 1px solid black;
 }
 
-.plane .quadrant {
-  outline: 1px solid #ccc;
+.quadrant {
   display: flex;
   margin: 20px;
   flex-basis: calc(50% - 40px);
@@ -16,8 +27,14 @@
   flex-direction: column;
 }
 
+
 path {
-  stroke: #ddd;
+  stroke: #999;
+}
+
+.ring-title {
+  text-transform: capitalize;
+  font-weight: bold;
 }
 
 .plane .quadrant, .title {

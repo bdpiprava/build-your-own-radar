@@ -1,0 +1,11 @@
+{
+  "container_id": "tech_radar",
+  "width": 1100,
+  "height": 1100,
+  "rings": [
+    "adopt",
+    "asses",
+    "trial",
+    "hold"
+  ]
+}

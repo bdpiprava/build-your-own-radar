@@ -1,0 +1,188 @@
+{
+  "date": "10/12/2021",
+  "name": "Tech Radar",
+  "author": "Spark Networks",
+  "logo_link": "",
+  "quadrants": [
+    {
+      "name": "Techniques",
+      "rings": [
+        {
+          "name": "adopt",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "asses",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "trial",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "hold",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tools",
+      "rings": [
+        {
+          "name": "adopt",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "asses",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "trial",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "hold",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Platforms",
+      "rings": [
+        {
+          "name": "adopt",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "asses",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "trial",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "hold",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Language & Frameworks",
+      "rings": [
+        {
+          "name": "adopt",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "asses",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "trial",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        },
+        {
+          "name": "hold",
+          "blips": [
+            {
+              "name": "GoLang",
+              "new": false,
+              "description": "The [Go language](https://golang.org/) gradually changed status from \"Just Another Language\" to a valuable tool in many projects. While steadfastly single paradigm in a world of increasingly complex languages, it seems to keep a nice balance between expressiveness, power, and simplicity."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

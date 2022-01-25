@@ -1,7 +1,10 @@
 import * as d3 from "d3"
 import data from "./data/v1.json"
-import {Point, QuadrantJSON, RadarJSON} from "./models/types";
+import {BlipJSON, QuadrantJSON, RadarJSON} from "./models/json_types";
+import {Point} from "./models/types";
 import './styles.scss';
+import {PositionFinder} from "./position_finder";
+import Chance from 'chance'
 
 export class Renderer {
     private root: any
@@ -12,12 +15,14 @@ export class Renderer {
     private readonly size: number;
     private readonly maxRadius: number;
     private readonly margin: number = 20;
+    private readonly posFinder: PositionFinder;
     private readonly baseColor = parseInt("cccccc", 16)
 
     constructor(size: number) {
         this.size = size
         this.maxRadius = Math.round(this.size / 2)
         this.radar = data as RadarJSON
+        this.posFinder = new PositionFinder(this.maxRadius)
     }
 
     init() {
@@ -68,7 +73,25 @@ export class Renderer {
         this.renderRings(plane);
         this.renderQuadrantsTitle();
         this.renderRingsTitle(plane);
-        
+
+        this.radar.quadrants.forEach((q: QuadrantJSON, qi: number) => {
+            const chance = new Chance(Math.PI * 4 * q.adopt.length * q.name.length),
+                qr = d3.selectAll(`.${this.sanitize(q.name.toLowerCase())}`)
+
+            q.adopt.forEach((blip: BlipJSON) => {
+                const minRadius = this.ringRadius(0),
+                    maxRadius = this.ringRadius(1),
+                    point = this.posFinder.findCoordinates(chance, minRadius, maxRadius, this.startAngle[qi]);
+
+                qr.append('circle')
+                    .attr('cx', point.x)
+                    .attr('cy', point.y)
+                    .attr('r', 12)
+                    .attr("rind", "adopt")
+                    .attr("blip", blip.name)
+                    .attr('fill', '#69a3b2');
+            });
+        });
     }
 
     private renderRingsTitle(plane: any) {
@@ -114,8 +137,7 @@ export class Renderer {
             const y = this.maxRadius + this.margin * (ySign)
 
             const qr = plane.append('g')
-                .attr('class', 'quadrant')
-                .attr('class', this.sanitize(q.name.toLowerCase()))
+                .attr('class', `quadrant ${this.sanitize(q.name.toLowerCase())}`)
                 .attr('transform', `translate(${x}, ${y})`)
 
             this.rings.reverse().forEach((ring: string, ri: number) => {
@@ -151,11 +173,11 @@ export class Renderer {
             .arc()
             .innerRadius(this.ringRadius(ridx))
             .outerRadius(this.ringRadius(ridx + 1))
-            .startAngle(Renderer.ringAngle(this.startAngle[qidx]))
-            .endAngle(Renderer.ringAngle(this.startAngle[qidx] - 90))
+            .startAngle(Renderer.radian(this.startAngle[qidx]))
+            .endAngle(Renderer.radian(this.startAngle[qidx] - 90))
     }
 
-    private static ringAngle(angle: number): number {
+    private static radian(angle: number): number {
         return (Math.PI * angle) / 180;
     }
 
