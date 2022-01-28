@@ -1,67 +1,79 @@
+import {Config} from "./models/config";
 import {Point} from "./models/types";
+import {ringRadius, toDegree, toRadian} from "./d3helper";
 import Chance from "chance";
 
 export class PositionFinder {
-    private readonly MAX_ITERATIONS = 200;
-    private readonly maxRadius: number;
-    private readonly _cache: Array<Point> = [];
+    private c: Config;
+    private readonly chance: Chance.Chance;
+    private readonly MAX_ITERATION = 300;
+    private static _pointCache: Array<Point> = new Array<Point>()
 
-    constructor(maxRadius: number) {
-        this.maxRadius = maxRadius;
+    constructor(config: Config) {
+        this.c = config;
+        this.chance = new Chance.Chance(config.WIDTH * config.HEIGHT)
     }
 
-    findCoordinates(chance: Chance.Chance, minRadius: number, maxRadius: number, startAngle: number): Point {
-        let iterationCounter = 0
-        let coordinates = this.calculateCoordinate(minRadius, maxRadius, startAngle)
-        let foundAPlace = false
-
-        while (iterationCounter < this.MAX_ITERATIONS) {
-            if (this.thereIsCollision(coordinates)) {
-                coordinates = this.calculateCoordinate(minRadius, maxRadius, startAngle)
-            } else {
-                foundAPlace = true
-                break
+    /**
+     * Returns the random point on given quadrant and ring.
+     * The returned point is most probably not overlap the other points returned by this method in earlier calls.
+     *
+     * @param quadrant
+     * @param ring
+     * @Returns Point
+     */
+    findPointOnRing(quadrant: number, ring: number): Point {
+        let point: Point
+        let found = false
+        for (let i = 0; i < this.MAX_ITERATION; i++) {
+            point = this.getRandomPointOnRing(quadrant, ring);
+            if (point.isOutSideOfArc(this.c.MID_X, this.c.MID_Y)) {
+                continue;
             }
-            iterationCounter++
+
+            if (!PositionFinder._pointCache.some((placed: Point) => point.isOverLapping(placed))) {
+                found = true
+                break;
+            }
         }
 
-        if (foundAPlace) {
-            return coordinates
+        if (found) {
+            PositionFinder._pointCache.push(point);
+            return point;
         }
 
-        throw Error("Ring is full.")
+        throw Error(`Failed to find free point for quadrant ${this.c.QUADRANTS[quadrant]} on ring ${this.c.RINGS[ring]}`)
     }
 
-    private calculateCoordinate(minR: number, maxR: number, startAngle: number): Point {
-        const bw = 6
-        const chance = Chance();
+    /**
+     * Returns the random point on given quadrant and ring. The given point can overlap the other points in the ring.
+     * @param quadrant - quadrant number
+     * @param ring - ring number in quadrant
+     * @Returns Point
+     */
+    getRandomPointOnRing(quadrant: number, ring: number): Point {
+        const innerRadius = ringRadius(ring, this.c.RINGS.length, this.c.MID_X)
+        const outerRadius = ringRadius(ring + 1, this.c.RINGS.length, this.c.MID_X)
 
-        const radian = this.radian(startAngle),
-            adjustX = Math.sin(radian) - Math.cos(radian),
-            adjustY = -Math.cos(radian) - Math.sin(radian),
-            radius = chance.floating({min: minR + bw, max: maxR - bw})
+        const a = this.calculateAngle(quadrant);
+        const r = this.calculateRadius(innerRadius, outerRadius)
 
-        let angleDelta = (Math.asin(bw / 2 / radius) * 180) / Math.PI
-        angleDelta = angleDelta > 45 ? 45 : angleDelta
-
-        const angle = this.radian(chance.integer({min: angleDelta, max: 90 - angleDelta}))
-
-        const x = this.maxRadius + radius * Math.cos(angle) * adjustX
-        const y = this.maxRadius + radius * Math.sin(angle) * adjustY
-
-        return {x, y}
+        return new Point(this.c.MID_X + (r * Math.cos(a)), this.c.MID_Y + r * Math.sin(a))
     }
 
-    private thereIsCollision(blipPos: Point) {
-        return this._cache.some(function (cached: Point) {
-            return (
-                Math.abs(cached.x - blipPos.x) < 12 &&
-                Math.abs(cached.y - blipPos.y) < 12
-            )
-        })
+    // Magic number 8 is to keep it away from the border
+    private calculateRadius(minR: number, maxR: number): number {
+        return this.randF(minR + this.c.BLIP_SIZE + 8, maxR - (this.c.BLIP_SIZE + 8));
     }
 
-    private radian(angle: number): number {
-        return (Math.PI * angle) / 180;
+    private calculateAngle(quadrant: number): number {
+        return toRadian(this.randF(
+            toDegree(this.c.arcInfo(quadrant).startAngle),
+            toDegree(this.c.arcInfo(quadrant).endAngle)
+        ));
+    }
+
+    private randF(min: number, max: number): number {
+        return this.chance.floating({min, max})
     }
 }

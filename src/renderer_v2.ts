@@ -1,34 +1,35 @@
 import './styles.scss';
 import {TechRadar} from "./models/radar";
 import * as d3 from "d3";
-import {PieArcDatum, Selection} from "d3";
+import {PieArcDatum} from "d3";
 import {ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
-import {QuadrantJSON} from "./models/json_types";
-import {Blip} from "./models/types";
-
-type HTMLElem<T extends HTMLElement> = Selection<T, unknown, HTMLElement, any>
-type SVGElem<T extends SVGGraphicsElement> = Selection<T, unknown, HTMLElement, any>
-
+import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
+import {Blip, HTMLElem, SVGElem} from "./models/types";
+import {PositionFinder} from "./position_finder";
 
 export class RendererV2 {
     private readonly c: Config;
     private readonly root: SVGElem<SVGSVGElement>;
     private readonly container: HTMLElem<HTMLDivElement>;
+    private readonly positionFinder: PositionFinder;
 
     constructor(config: Config) {
         this.c = config;
         this.container = d3.select('body')
             .append('div')
             .attr('class', 'page')
-        this.root = this.container.append('svg').attr('class', 'plane');
+        this.root = this.container.append('svg').attr('class', 'plane')
+            .style('font-family', this.c.FONT.family)
+            .style('font-size', this.c.FONT.size);
+        this.positionFinder = new PositionFinder(config)
     }
 
     render(data: TechRadar) {
         this.root
-            .attr("id", this.c.CONTAINER_ID)
-            .attr("width", this.c.WIDTH)
-            .attr("height", this.c.HEIGHT);
+            .attr('id', this.c.CONTAINER_ID)
+            .attr('width', this.c.WIDTH)
+            .attr('height', this.c.HEIGHT);
 
         this.root
             .append("rect")
@@ -36,40 +37,46 @@ export class RendererV2 {
             .attr('y', 0)
             .attr('width', this.c.WIDTH)
             .attr('height', this.c.HEIGHT)
-            .attr('fill', '#eef1f3')
+            .attr('fill', this.c.radarBackground())
 
         const radar = this.root.append('g')
-            .attr("transform", translate(this.c.MID_X, this.c.MID_Y))
-
-        const qArcData = d3.pie()(Array(data.quadrantCount()).fill(1, 0, data.quadrantCount()));
+            .attr('transform', translate(this.c.MID_X, this.c.MID_Y))
 
         radar.append('ellipse')
             .attr('cx', 0)
             .attr('cy', 0)
             .attr('rx', this.c.MID_X)
             .attr('ry', this.c.MID_X)
-            .attr('fill', '#fff')
+            .attr('fill', this.c.quadrantPaddingColor())
 
         data.quadrants().forEach((q: QuadrantJSON, qi: number) => {
-            this.plotQuadrant(radar, data, q, qArcData[qi])
+            this.plotQuadrant(radar, q, this.c.arcInfo(qi))
         })
         this.plotRingTitles();
 
-        data.blipsByQuadrants().forEach((blips: Blip[], quadrant: string) => {
-            const quadrantGroup = d3.selectAll(`.${quadrant}`)
-            blips.forEach((b: Blip, bi: number) => {
-                const innerRadius = ringRadius(b.ring, this.c.RINGS.length, this.c.MID_X)
-                const outerRadius = ringRadius(b.ring + 1, this.c.RINGS.length, this.c.MID_X)
-                const x = Math.cos(Math.asin(Math.random() / innerRadius)) * innerRadius;
-                const y = Math.cos(Math.asin(Math.random() / outerRadius)) * outerRadius;
-
-                quadrantGroup.append('text')
-                    .text(b.order)
-                    .style("font-family", "Arial, Helvetica")
-                    .style("font-size", "34px")
-                    .attr("transform", translate(x, y));
+        this.blipsByQuadrants(data).forEach((blips: Blip[]) => {
+            blips.forEach((b: Blip) => {
+                this.plotBlip(b);
             });
         })
+    }
+
+    private plotBlip(b: Blip) {
+        const point = this.positionFinder.findPointOnRing(b.quadrant, b.ring)
+
+        this.root.append('circle')
+            .attr('cx', point.x)
+            .attr('cy', point.y - 4)
+            .attr('r', this.c.BLIP_SIZE)
+            .attr('fill', this.c.blipBackground(b.quadrant));
+
+        this.root.append('text')
+            .text(b.order)
+            .attr('text-anchor', 'middle')
+            .style('font-size', '80%')
+            .style('font-weight', 'bold')
+            .attr('fill', '#fff')
+            .attr('transform', translate(point.x, point.y));
     }
 
     private plotRingTitles() {
@@ -92,27 +99,56 @@ export class RendererV2 {
         })
     }
 
-    private plotQuadrant(radar: SVGElem<SVGGElement>, data: TechRadar, quadrant: QuadrantJSON, pie: PieArcDatum<any>) {
+    private plotQuadrant(radar: SVGElem<SVGGElement>, quadrant: QuadrantJSON, pie: PieArcDatum<unknown>) {
         const quadrantGroup = radar.append('g')
             .attr('class', `quadrant ${sanitize(quadrant.name)}`)
+
+        //TODO: align coordinates
+        quadrantGroup.append('text')
+            .text(quadrant.name)
+            .attr('transform', translate(1, 1))
 
         this.c.RINGS.forEach((r: string, ri: number) => {
             this.plotRing(ri, pie, quadrantGroup);
         });
     }
 
-    private plotRing(order: number, pie: PieArcDatum<any>, quadrantGroup: SVGElem<SVGGElement>) {
+    private plotRing(order: number, pie: PieArcDatum<unknown>, quadrantGroup: SVGElem<SVGGElement>) {
         const arc = d3.arc()
             .innerRadius(ringRadius(order, this.c.RINGS.length, this.c.MID_X))
             .outerRadius(ringRadius(order + 1, this.c.RINGS.length, this.c.MID_X))
             .startAngle(pie.startAngle)
             .endAngle(pie.endAngle)
-            .padAngle(0.08)
+            .padAngle(0.05)
             .padRadius(this.c.MID_X);
 
-        quadrantGroup.append("path")
-            .attr("fill", "#fff")
-            .attr("stroke", "gray")
-            .attr("d", arc);
+        quadrantGroup.append('path')
+            .attr('fill', this.c.ringBackground(order))
+            .attr('stroke', 'gray')
+            .attr('class', `ring-${order}`)
+            .attr('d', arc);
+    }
+
+    private blipsByQuadrants(radar: TechRadar): Map<string, Array<Blip>> {
+        const groupedByQuadrants = new Map<string, Array<Blip>>()
+        let blipCount = 0;
+        radar.quadrants().forEach((q: QuadrantJSON) => {
+            const blips = new Array<Blip>()
+            q.rings.forEach((r: RingJSON) => {
+                r.blips.forEach((b: BlipJSON) => {
+                    blips.push({
+                        order: blipCount++,
+                        name: b.name,
+                        quadrant: this.c.QUADRANTS.indexOf(q.name),
+                        ring: this.c.RINGS.indexOf(r.name),
+                        description: b.description
+                    })
+                })
+            })
+            groupedByQuadrants.set(sanitize(q.name), blips)
+        })
+
+        console.log(groupedByQuadrants)
+        return groupedByQuadrants;
     }
 }

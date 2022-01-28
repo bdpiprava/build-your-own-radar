@@ -2,10 +2,32 @@
   "container_id": "tech_radar",
   "width": 1100,
   "height": 1100,
+  "blip_size": 12,
+  "font": {
+    "family": "Inter,Noto Sans SC,sans-serif",
+    "size": "12px"
+  },
+  "colors": {
+    "radar_background": "#eef1f3",
+    "rings_background": "#fff",
+    "quadrant_padding": "#fff",
+    "blips_background": [
+      "#00BFA5",
+      "#795548",
+      "#303F9F",
+      "#ef4fa6"
+    ]
+  },
   "rings": [
     "adopt",
     "asses",
     "trial",
     "hold"
+  ],
+  "quadrants": [
+    "tools",
+    "techniques",
+    "platforms",
+    "languages & frameworks"
   ]
 }
