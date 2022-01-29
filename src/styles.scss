@@ -17,16 +17,20 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-}
 
-.quadrant {
-  display: flex;
-  margin: 20px;
-  flex-basis: calc(50% - 40px);
-  justify-content: center;
-  flex-direction: column;
-}
+  .quadrant {
+    display: flex;
+    margin: 20px;
+    flex-basis: calc(50% - 40px);
+    justify-content: center;
+    flex-direction: column;
+  }
 
+  .title {
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+}
 
 path {
   stroke: #999;
@@ -35,10 +39,6 @@ path {
 .ring-title {
   text-transform: capitalize;
   font-weight: bold;
-}
-
-.plane .quadrant, .title {
-
 }
 
 .tooltip {

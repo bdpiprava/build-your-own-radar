@@ -2,10 +2,10 @@ import './styles.scss';
 import {TechRadar} from "./models/radar";
 import * as d3 from "d3";
 import {PieArcDatum} from "d3";
-import {ringRadius, sanitize, translate} from "./d3helper";
+import {calculateHypotenuse, ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
-import {Blip, BlipSvgData, HTMLElem, SVGElem} from "./models/types";
+import {Blip, BlipSvgData, HTMLElem, Point, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
 
 export class RendererV2 {
@@ -126,10 +126,26 @@ export class RendererV2 {
         const quadrantGroup = radar.append('g')
             .attr('class', `quadrant ${sanitize(quadrant.name)}`)
 
-        //TODO: align coordinates
-        quadrantGroup.append('text')
-            .text(quadrant.name)
-            .attr('transform', translate(1, 1))
+        const r = calculateHypotenuse(this.c.MID_X, this.c.MID_Y)
+        const a = pie.startAngle + (0.25 * Math.PI);
+        const x = r * Math.cos(a)
+        const y = (r * Math.sin(a))
+
+        const quadTitle = quadrantGroup.selectAll()
+            .data([new Point(x, y)], (d) => d.toString())
+            .enter()
+            .append('text')
+            .attr('class', 'title')
+            .attr('text-anchor', (d) => d.x < 0 ? 'start' : 'end')
+            .text(quadrant.name);
+
+        quadTitle.transition()
+            .attr('transform', (d: Point) => {
+                const x = d.x > 0 ? d.x - 10 : d.x + 10;
+                const y = d.y < 0 ? d.y + quadTitle.node().getBBox().height + 5 : d.y - 10;
+                return translate(x, y);
+            });
+
 
         this.c.RINGS.forEach((r: string, ri: number) => {
             this.plotRing(ri, pie, quadrantGroup);

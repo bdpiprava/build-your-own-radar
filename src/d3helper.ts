@@ -20,3 +20,7 @@ export function toDegree(radian: number): number {
 export function toRadian(degree: number): number {
     return Math.PI * degree / 180
 }
+
+export function calculateHypotenuse(a: number, b: number): number {
+    return Math.sqrt((a * a) + (b * b))
+}
