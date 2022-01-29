@@ -1,23 +1,18 @@
-.body {
+body {
   display: flex;
-  width: 100%;
   justify-content: center;
 }
 
 .page {
-  background: #fff;
+  display: flex;
+  justify-content: center;
   align-self: center;
+  background: #fff;
   width: 1240px;
   height: 1754px;
-  justify-content: center;
-  display: flex;
 }
 
 .plane {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-
   .quadrant {
     display: flex;
     margin: 20px;

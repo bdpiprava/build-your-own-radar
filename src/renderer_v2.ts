@@ -76,11 +76,11 @@ export class RendererV2 {
             })
             .enter()
             .append('circle')
-            .attr('cx', point.x)
-            .attr('cy', point.y - 4)
             .attr('r', this.c.BLIP_SIZE)
             .attr('fill', this.c.blipBackground(blip.quadrant))
             .attr('class', 'blip')
+            .attr('cx', this.c.MID_X)
+            .attr('cy', this.c.MID_Y)
             .on('mouseover', (e: MouseEvent, d) => {
                 this.tooltip.text(d.blip.name);
                 const box = this.tooltip.node().getBoundingClientRect();
@@ -90,7 +90,12 @@ export class RendererV2 {
                     .style("top", d.point.y - box.height - 16 + "px")
                     .style("left", d.point.x + (box.width / 2) + 4 + "px")
                     .style('opacity', 0.8);
-            });
+            })
+            .transition()
+            .attr('cx', point.x)
+            .attr('cy', point.y - 4)
+            .duration(500);
+
 
         this.root.append('text')
             .text(blip.order)
