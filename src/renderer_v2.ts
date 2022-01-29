@@ -5,7 +5,7 @@ import {PieArcDatum} from "d3";
 import {ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
-import {Blip, HTMLElem, SVGElem} from "./models/types";
+import {Blip, BlipSvgData, HTMLElem, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
 
 export class RendererV2 {
@@ -13,15 +13,20 @@ export class RendererV2 {
     private readonly root: SVGElem<SVGSVGElement>;
     private readonly container: HTMLElem<HTMLDivElement>;
     private readonly positionFinder: PositionFinder;
+    private readonly tooltip: HTMLElem<HTMLSpanElement>;
 
     constructor(config: Config) {
         this.c = config;
         this.container = d3.select('body')
             .append('div')
             .attr('class', 'page')
+
         this.root = this.container.append('svg').attr('class', 'plane')
             .style('font-family', this.c.FONT.family)
             .style('font-size', this.c.FONT.size);
+
+        this.tooltip = this.container.append("div").attr("class", "tooltip");
+
         this.positionFinder = new PositionFinder(config)
     }
 
@@ -61,20 +66,38 @@ export class RendererV2 {
         })
     }
 
-    private plotBlip(b: Blip) {
-        const point = this.positionFinder.findPointOnRing(b.quadrant, b.ring)
+    private plotBlip(blip: Blip) {
+        const point = this.positionFinder.findPointOnRing(blip.quadrant, blip.ring)
+        const data = [{point, blip}]
 
-        this.root.append('circle')
+        this.root.selectAll()
+            .data(data, (d: BlipSvgData) => {
+                return `${d.blip.quadrant}_${d.blip.ring}_${d.blip.name}`;
+            })
+            .enter()
+            .append('circle')
             .attr('cx', point.x)
             .attr('cy', point.y - 4)
             .attr('r', this.c.BLIP_SIZE)
-            .attr('fill', this.c.blipBackground(b.quadrant));
+            .attr('fill', this.c.blipBackground(blip.quadrant))
+            .attr('class', 'blip')
+            .on('mouseover', (e: MouseEvent, d) => {
+                this.tooltip.text(d.blip.name);
+                const box = this.tooltip.node().getBoundingClientRect();
+                this.tooltip
+                    .transition()
+                    .duration(200)
+                    .style("top", d.point.y - box.height - 16 + "px")
+                    .style("left", d.point.x + (box.width / 2) + 4 + "px")
+                    .style('opacity', 0.8);
+            });
 
         this.root.append('text')
-            .text(b.order)
+            .text(blip.order)
             .attr('text-anchor', 'middle')
             .style('font-size', '80%')
             .style('font-weight', 'bold')
+            .style('cursor', 'pointer')
             .attr('fill', '#fff')
             .attr('transform', translate(point.x, point.y));
     }
@@ -147,8 +170,6 @@ export class RendererV2 {
             })
             groupedByQuadrants.set(sanitize(q.name), blips)
         })
-
-        console.log(groupedByQuadrants)
         return groupedByQuadrants;
     }
 }

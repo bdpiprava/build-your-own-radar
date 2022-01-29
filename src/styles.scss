@@ -40,3 +40,35 @@ path {
 .plane .quadrant, .title {
 
 }
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  padding: 5px;
+  border: 3px;
+  pointer-events: none;
+  opacity: 0;
+  background-color: #333;
+  border-radius: 5px;
+  color: #fff;
+  font-family: Inter, Noto Sans SC, sans-serif;
+  font-size: 13px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 43%;
+    top: 100%;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #333;
+    clear: both;
+  }
+}
+
+.blip {
+  cursor: pointer;
+}

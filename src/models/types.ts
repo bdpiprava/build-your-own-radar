@@ -8,6 +8,11 @@ export interface Blip {
     ring: number
 }
 
+export interface BlipSvgData {
+    point: Point
+    blip: Blip
+}
+
 export type HTMLElem<T extends HTMLElement> = Selection<T, unknown, HTMLElement, unknown>
 export type SVGElem<T extends SVGGraphicsElement> = Selection<T, unknown, HTMLElement, unknown>
 
