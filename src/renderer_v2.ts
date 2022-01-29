@@ -81,16 +81,8 @@ export class RendererV2 {
             .attr('class', 'blip')
             .attr('cx', this.c.MID_X)
             .attr('cy', this.c.MID_Y)
-            .on('mouseover', (e: MouseEvent, d) => {
-                this.tooltip.text(d.blip.name);
-                const box = this.tooltip.node().getBoundingClientRect();
-                this.tooltip
-                    .transition()
-                    .duration(200)
-                    .style("top", d.point.y - box.height - 16 + "px")
-                    .style("left", d.point.x + (box.width / 2) + 4 + "px")
-                    .style('opacity', 0.8);
-            })
+            .on('mouseover', this.blipMouseOver.bind(this, data[0]))
+            .on('mouseout', this.blipMouseOut.bind(this))
             .transition()
             .attr('cx', point.x)
             .attr('cy', point.y - 4)
@@ -99,6 +91,8 @@ export class RendererV2 {
 
         this.root.append('text')
             .text(blip.order)
+            .on('mouseover', this.blipMouseOver.bind(this, data[0]))
+            .on('mouseout', this.blipMouseOut.bind(this))
             .attr('text-anchor', 'middle')
             .style('font-size', '80%')
             .style('font-weight', 'bold')
@@ -192,5 +186,20 @@ export class RendererV2 {
             groupedByQuadrants.set(sanitize(q.name), blips)
         })
         return groupedByQuadrants;
+    }
+
+    private blipMouseOver(d: BlipSvgData, e: MouseEvent) {
+        e.stopImmediatePropagation()
+        this.tooltip.text(d.blip.name);
+        const box = this.tooltip.node().getBoundingClientRect();
+        this.tooltip
+            .transition()
+            .style("top", d.point.y - box.height - 25 + "px")
+            .style("left", d.point.x + (box.width / 2) + "px")
+            .style('opacity', 0.8);
+    }
+
+    private blipMouseOut() {
+        this.tooltip.style('opacity', 0)
     }
 }
