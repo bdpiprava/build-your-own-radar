@@ -1,18 +1,17 @@
 import './styles.scss';
-import {TechRadar} from "./models/radar";
 import * as d3 from "d3";
-import {PieArcDatum} from "d3";
 import {calculateHypotenuse, ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
-import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
-import {Blip, BlipSvgData, HTMLElem, Point, SVGElem} from "./models/types";
+import {BlipJSON, QuadrantJSON, RadarJSON, RingJSON} from "./models/json_types";
+import {Blip, HTMLElem, Point, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
-import e from "express";
+import {PieArcDatum} from "d3";
 
 export class RendererV2 {
     private readonly c: Config;
     private readonly root: SVGElem<SVGSVGElement>;
     private readonly container: HTMLElem<HTMLDivElement>;
+    private readonly title: HTMLElem<HTMLDivElement>;
     private readonly positionFinder: PositionFinder;
     private readonly tooltip: HTMLElem<HTMLSpanElement>;
 
@@ -21,17 +20,22 @@ export class RendererV2 {
         this.container = d3.select('body')
             .append('div')
             .attr('class', 'page')
+            .style('width', this.c.WIDTH + 'px')
+            .style('height', this.c.WIDTH * 1.4142 + 'px')
+
+        this.title = this.container.append('div').attr('class', 'radar-title')
 
         this.root = this.container.append('svg').attr('class', 'plane')
             .style('font-family', this.c.FONT.family)
             .style('font-size', this.c.FONT.size);
 
-        this.tooltip = this.container.append("div").attr("class", "tooltip");
-
+        this.tooltip = this.container.append('div').attr("class", "tooltip");
         this.positionFinder = new PositionFinder(config)
     }
 
-    render(data: TechRadar) {
+    render(data: RadarJSON) {
+        this.title.text(data.name);
+
         this.root
             .attr('id', this.c.CONTAINER_ID)
             .attr('width', this.c.WIDTH)
@@ -55,8 +59,8 @@ export class RendererV2 {
             .attr('ry', this.c.MID_X)
             .attr('fill', this.c.quadrantPaddingColor())
 
-        data.quadrants().forEach((q: QuadrantJSON, qi: number) => {
-            this.plotQuadrant(radar, q, this.c.arcInfo(qi))
+        this.c.QUADRANTS.forEach((quadrant: string, qi: number) => {
+            this.plotQuadrant(radar, quadrant, this.c.arcInfo(qi))
         })
 
         this.plotRingTitles();
@@ -116,9 +120,9 @@ export class RendererV2 {
         })
     }
 
-    private plotQuadrant(radar: SVGElem<SVGGElement>, quadrant: QuadrantJSON, pie: PieArcDatum<unknown>) {
+    private plotQuadrant(radar: SVGElem<SVGGElement>, quadrant: string, pie: PieArcDatum<unknown>) {
         const quadrantGroup = radar.append('g')
-            .attr('class', `quadrant ${sanitize(quadrant.name)}`)
+            .attr('class', `quadrant ${sanitize(quadrant)}`)
 
         const r = calculateHypotenuse(this.c.MID_X, this.c.MID_Y)
         const a = pie.startAngle + (0.25 * Math.PI);
@@ -131,12 +135,12 @@ export class RendererV2 {
             .append('text')
             .attr('class', 'title')
             .attr('text-anchor', (d) => d.x < 0 ? 'start' : 'end')
-            .text(quadrant.name);
+            .text(quadrant);
 
         quadTitle.transition()
             .attr('transform', (d: Point) => {
-                const x = d.x > 0 ? d.x - 10 : d.x + 10;
-                const y = d.y < 0 ? d.y + quadTitle.node().getBBox().height + 5 : d.y - 10;
+                const x = d.x > 0 ? d.x - 20 : d.x + 20;
+                const y = d.y < 0 ? d.y + quadTitle.node().getBBox().height + 10 : d.y - 20;
                 return translate(x, y);
             });
 
@@ -162,9 +166,9 @@ export class RendererV2 {
             .attr('d', arc);
     }
 
-    private prepareBlipsForRendering(radar: TechRadar): Array<Blip> {
+    private prepareBlipsForRendering(radar: RadarJSON): Array<Blip> {
         const blips = new Array<Blip>()
-        radar.quadrants().forEach((q: QuadrantJSON) => {
+        radar.quadrants.forEach((q: QuadrantJSON) => {
             q.rings.forEach((r: RingJSON) => {
                 r.blips.forEach((b: BlipJSON) => {
                     blips.push({
@@ -185,10 +189,11 @@ export class RendererV2 {
         e.stopImmediatePropagation()
         this.tooltip.text(blip.name);
         const box = this.tooltip.node().getBoundingClientRect();
+
         this.tooltip
             .transition()
-            .style("top", blip.point.y - box.height - 25 + "px")
-            .style("left", blip.point.x + (box.width / 2) + "px")
+            .style("left", e.pageX - (box.width / 2) + "px")
+            .style("top", e.pageY - box.height - 20 + "px")
             .style('opacity', 0.8);
     }
 

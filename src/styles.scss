@@ -1,30 +1,35 @@
 body {
+  background: #fafafa;
+  margin: auto;
+}
+
+.radar-title {
   display: flex;
-  justify-content: center;
+  font-family: Inter, Noto Sans SC, sans-serif;
+  font-size: 35px;
+  margin: 0 0 50px 0;
+  font-weight: bold;
 }
 
 .page {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-self: center;
+  padding: 50px 75px;
   background: #fff;
   width: 1240px;
   height: 1754px;
+  margin: auto;
 }
 
 .plane {
-  .quadrant {
-    display: flex;
-    margin: 20px;
-    flex-basis: calc(50% - 40px);
-    justify-content: center;
-    flex-direction: column;
-  }
+  align-self: center;
 
-  .title {
-    text-transform: capitalize;
-    font-weight: bold;
+  .quadrant {
+    margin: 20px;
+
+    .title {
+      text-transform: capitalize;
+      font-weight: bold;
+      font-size: 20px;
+    }
   }
 }
 

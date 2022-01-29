@@ -1,7 +1,6 @@
 import {RendererV2} from "./renderer_v2";
 import data from "./data/v2.json"
 import config from "./data/config.json"
-import {TechRadar} from "./models/radar";
 import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
 import Chance from "chance";
@@ -29,5 +28,5 @@ function random(min: number, max: number): number {
     return new Chance.Chance(new Date().toDateString()).integer({min, max})
 }
 
-new RendererV2(new Config(config)).render(new TechRadar(data))
+new RendererV2(new Config(config)).render(data)
 
