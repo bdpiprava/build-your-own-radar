@@ -1,11 +1,12 @@
 import {Selection} from "d3";
 
 export interface Blip {
-    order: number
-    name: string
-    description: string
-    quadrant: number
-    ring: number
+    order: number;
+    name: string;
+    description: string;
+    quadrant: number;
+    ring: number;
+    point: Point
 }
 
 export interface BlipSvgData {

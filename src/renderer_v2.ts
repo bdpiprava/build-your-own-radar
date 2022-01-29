@@ -7,6 +7,7 @@ import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RingJSON} from "./models/json_types";
 import {Blip, BlipSvgData, HTMLElem, Point, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
+import e from "express";
 
 export class RendererV2 {
     private readonly c: Config;
@@ -57,48 +58,42 @@ export class RendererV2 {
         data.quadrants().forEach((q: QuadrantJSON, qi: number) => {
             this.plotQuadrant(radar, q, this.c.arcInfo(qi))
         })
-        this.plotRingTitles();
 
-        this.blipsByQuadrants(data).forEach((blips: Blip[]) => {
-            blips.forEach((b: Blip) => {
-                this.plotBlip(b);
-            });
-        })
+        this.plotRingTitles();
+        this.plotBlips(this.prepareBlipsForRendering(data));
     }
 
-    private plotBlip(blip: Blip) {
-        const point = this.positionFinder.findPointOnRing(blip.quadrant, blip.ring)
-        const data = [{point, blip}]
+    private plotBlips(data: Blip[]) {
 
         this.root.selectAll()
-            .data(data, (d: BlipSvgData) => {
-                return `${d.blip.quadrant}_${d.blip.ring}_${d.blip.name}`;
-            })
+            .data(data, (d: Blip) => `${d.quadrant}_${d.ring}_${d.name}`)
             .enter()
             .append('circle')
             .attr('r', this.c.BLIP_SIZE)
-            .attr('fill', this.c.blipBackground(blip.quadrant))
+            .attr('fill', (blip) => this.c.blipBackground(blip.quadrant))
             .attr('class', 'blip')
             .attr('cx', this.c.MID_X)
             .attr('cy', this.c.MID_Y)
-            .on('mouseover', this.blipMouseOver.bind(this, data[0]))
+            .on('mouseover', (e, d) => this.blipMouseOver(d, e))
             .on('mouseout', this.blipMouseOut.bind(this))
             .transition()
-            .attr('cx', point.x)
-            .attr('cy', point.y - 4)
+            .attr('cx', (b: Blip) => b.point.x)
+            .attr('cy', (b: Blip) => b.point.y - 4)
             .duration(500);
 
-
-        this.root.append('text')
-            .text(blip.order)
-            .on('mouseover', this.blipMouseOver.bind(this, data[0]))
+        this.root.selectAll()
+            .data(data, (d: Blip) => `${d.quadrant}_${d.ring}_${d.name}`)
+            .enter()
+            .append('text')
+            .text((blip: Blip) => blip.order)
+            .on('mouseover', (_, d: Blip) => this.blipMouseOver.bind(this, d))
             .on('mouseout', this.blipMouseOut.bind(this))
             .attr('text-anchor', 'middle')
             .style('font-size', '80%')
             .style('font-weight', 'bold')
             .style('cursor', 'pointer')
             .attr('fill', '#fff')
-            .attr('transform', translate(point.x, point.y));
+            .attr('transform', (blip: Blip) => translate(blip.point.x, blip.point.y));
     }
 
     private plotRingTitles() {
@@ -167,35 +162,33 @@ export class RendererV2 {
             .attr('d', arc);
     }
 
-    private blipsByQuadrants(radar: TechRadar): Map<string, Array<Blip>> {
-        const groupedByQuadrants = new Map<string, Array<Blip>>()
-        let blipCount = 0;
+    private prepareBlipsForRendering(radar: TechRadar): Array<Blip> {
+        const blips = new Array<Blip>()
         radar.quadrants().forEach((q: QuadrantJSON) => {
-            const blips = new Array<Blip>()
             q.rings.forEach((r: RingJSON) => {
                 r.blips.forEach((b: BlipJSON) => {
                     blips.push({
-                        order: blipCount++,
+                        order: blips.length + 1,
                         name: b.name,
                         quadrant: this.c.QUADRANTS.indexOf(q.name),
                         ring: this.c.RINGS.indexOf(r.name),
-                        description: b.description
+                        description: b.description,
+                        point: this.positionFinder.findPointOnRing(this.c.QUADRANTS.indexOf(q.name), this.c.RINGS.indexOf(r.name))
                     })
                 })
             })
-            groupedByQuadrants.set(sanitize(q.name), blips)
         })
-        return groupedByQuadrants;
+        return blips;
     }
 
-    private blipMouseOver(d: BlipSvgData, e: MouseEvent) {
+    private blipMouseOver(blip: Blip, e: MouseEvent) {
         e.stopImmediatePropagation()
-        this.tooltip.text(d.blip.name);
+        this.tooltip.text(blip.name);
         const box = this.tooltip.node().getBoundingClientRect();
         this.tooltip
             .transition()
-            .style("top", d.point.y - box.height - 25 + "px")
-            .style("left", d.point.x + (box.width / 2) + "px")
+            .style("top", blip.point.y - box.height - 25 + "px")
+            .style("left", blip.point.x + (box.width / 2) + "px")
             .style('opacity', 0.8);
     }
 
