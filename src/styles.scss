@@ -17,6 +17,29 @@ body {
   width: 1240px;
   height: 1754px;
   margin: auto;
+  border: 1px solid #999999;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .quad-index {
+    width: 50%;
+
+    .quad-title {
+      background: #ddd;
+      padding: 20px 30px;
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+
+    .ring-title {
+      display: flex;
+      padding: 20px 30px;
+    }
+  }
 }
 
 .plane {

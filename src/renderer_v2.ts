@@ -1,6 +1,6 @@
 import './styles.scss';
 import * as d3 from "d3";
-import {PieArcDatum} from "d3";
+import {PieArcDatum, sort} from "d3";
 import {calculateHypotenuse, ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RadarJSON, RingJSON} from "./models/json_types";
@@ -17,12 +17,7 @@ export class RendererV2 {
 
     constructor(config: Config) {
         this.c = config;
-        this.container = d3.select('body')
-            .append('div')
-            .attr('class', 'page')
-            .style('width', this.c.WIDTH + 'px')
-            .style('height', this.c.WIDTH * 1.4142 + 'px')
-
+        this.container = this.createPage(1)
         this.title = this.container.append('div').attr('class', 'radar-title')
 
         this.root = this.container.append('svg').attr('class', 'plane')
@@ -64,7 +59,9 @@ export class RendererV2 {
         })
 
         this.plotRingTitles();
-        this.plotBlips(this.prepareBlipsForRendering(data));
+        const blips = this.prepareBlipsForRendering(data);
+        this.plotBlips(blips);
+        this.plotIndex(data.name, blips);
     }
 
     private plotBlips(data: Blip[]) {
@@ -183,7 +180,7 @@ export class RendererV2 {
                 })
             })
         })
-        return blips;
+        return sort(blips, RendererV2.quadrantCompare);
     }
 
     private blipMouseOver(blip: Blip, e: MouseEvent) {
@@ -208,5 +205,52 @@ export class RendererV2 {
     private blipMouseOut() {
         this.tooltip.style('opacity', 0)
             .style('pointer-events', 'none');
+    }
+
+    private plotIndex(name: string, blips: Array<Blip>) {
+        let section: HTMLElem<HTMLDivElement>, pageCount = 1;
+
+        this.c.QUADRANTS.forEach((quad: string, i: number) => {
+            if (i % 2 == 0) {
+                const page = this.createPage(pageCount++);
+                page.append('div').attr('class', 'radar-title').text(name);
+                section = page.append('div').attr('class', `section`);
+            }
+
+            const index = section.append('div')
+                .attr('class', `quad-index qi-${i}`);
+
+            index.append('div')
+                .attr('class', 'quad-title')
+                .style('background', this.c.blipBackground(i))
+                .style('color', "#fff")
+                .text(this.c.QUADRANTS[i]);
+
+            const quadBody = index.append('div').attr('class', 'quad-body')
+
+            this.c.RINGS.forEach((ring: string, ri: number) => {
+                const ringIndex = quadBody.append('div').attr('class', `ring-index ring-${ri}`);
+                ringIndex.append('span').attr('class', 'ring-title').text(ring);
+            })
+        })
+
+        blips.forEach((blip: Blip) => {
+            d3.select(`.qi-${blip.quadrant}`)
+                .select(`.ring-${blip.ring}`)
+                .append('div').text(`${blip.order}. ${blip.name}`)
+
+        });
+    }
+
+    private static quadrantCompare(a: Blip, b: Blip): number {
+        return a.quadrant - b.quadrant;
+    }
+
+    private createPage(pageNumber: number): HTMLElem<HTMLDivElement> {
+        return d3.select('body')
+            .append('div')
+            .attr('class', 'page')
+            .style('width', this.c.WIDTH + 'px')
+            .style('height', this.c.WIDTH * 1.4142 + 'px');
     }
 }
