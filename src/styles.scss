@@ -1,6 +1,7 @@
 body {
-  background: #fafafa;
+  background: #323639;
   margin: auto;
+  font-family: 'Source Serif 4', Inter, Noto Sans SC, sans-serif;
 }
 
 .radar-title {
@@ -16,29 +17,34 @@ body {
   background: #fff;
   width: 1240px;
   height: 1754px;
-  margin: auto;
-  border: 1px solid #999999;
-}
+  margin: auto auto 25px;
 
-.section {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
+  .quad-title {
+    padding: 25px 75px;
+    color: #fff;
+    margin: -50px -75px;
+    font-size: 25px;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
 
-  .quad-index {
-    width: 50%;
+  .blip-title {
+    font-weight: 600;
+    font-size: 16px;
+  }
 
-    .quad-title {
-      background: #ddd;
-      padding: 20px 30px;
-      text-transform: capitalize;
-      font-weight: bold;
-    }
+  .sub-title {
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+  }
 
-    .ring-title {
-      display: flex;
-      padding: 20px 30px;
-    }
+  .blip-description {
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 15px;
   }
 }
 

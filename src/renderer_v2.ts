@@ -17,15 +17,15 @@ export class RendererV2 {
 
     constructor(config: Config) {
         this.c = config;
-        this.container = this.createPage(1)
-        this.title = this.container.append('div').attr('class', 'radar-title')
+        this.container = this.createPage();
+        this.title = this.container.append('div').attr('class', 'radar-title');
 
         this.root = this.container.append('svg').attr('class', 'plane')
             .style('font-family', this.c.FONT.family)
             .style('font-size', this.c.FONT.size);
 
         this.tooltip = this.container.append('div').attr("class", "tooltip");
-        this.positionFinder = new PositionFinder(config)
+        this.positionFinder = new PositionFinder(config);
     }
 
     render(data: RadarJSON) {
@@ -61,7 +61,7 @@ export class RendererV2 {
         this.plotRingTitles();
         const blips = this.prepareBlipsForRendering(data);
         this.plotBlips(blips);
-        this.plotIndex(data.name, blips);
+        this.plotIndex(blips);
     }
 
     private plotBlips(data: Blip[]) {
@@ -180,7 +180,13 @@ export class RendererV2 {
                 })
             })
         })
-        return sort(blips, RendererV2.quadrantCompare);
+
+        const sorted = sort(blips, RendererV2.quadrantCompare);
+        sorted.map((blip: Blip, i: number) => {
+            blip.order = i + 1
+        });
+
+        return sorted;
     }
 
     private blipMouseOver(blip: Blip, e: MouseEvent) {
@@ -207,38 +213,33 @@ export class RendererV2 {
             .style('pointer-events', 'none');
     }
 
-    private plotIndex(name: string, blips: Array<Blip>) {
-        let section: HTMLElem<HTMLDivElement>, pageCount = 1;
+    private plotIndex(blips: Array<Blip>) {
+        let currentPage: HTMLElem<HTMLDivElement>;
+        let currentQuad = -1;
+        blips.forEach((blip: Blip) => {
+            if (blip.quadrant != currentQuad) {
+                currentPage = this.createPage();
+                currentQuad = blip.quadrant;
 
-        this.c.QUADRANTS.forEach((quad: string, i: number) => {
-            if (i % 2 == 0) {
-                const page = this.createPage(pageCount++);
-                page.append('div').attr('class', 'radar-title').text(name);
-                section = page.append('div').attr('class', `section`);
+                currentPage.append('div')
+                    .attr('class', 'quad-title')
+                    .style('background', this.c.blipBackground(blip.quadrant))
+                    .style('color', "#fff")
+                    .text(this.c.QUADRANTS[blip.quadrant]);
             }
 
-            const index = section.append('div')
-                .attr('class', `quad-index qi-${i}`);
+            currentPage.append('div')
+                .attr('class', 'blip-title')
+                .text(`${blip.order}. ${blip.name}`);
 
-            index.append('div')
-                .attr('class', 'quad-title')
-                .style('background', this.c.blipBackground(i))
-                .style('color', "#fff")
-                .text(this.c.QUADRANTS[i]);
+            currentPage.append('div')
+                .attr('class', 'sub-title')
+                .style('color', this.c.blipBackground(blip.quadrant))
+                .text(this.c.RINGS[blip.ring]);
 
-            const quadBody = index.append('div').attr('class', 'quad-body')
-
-            this.c.RINGS.forEach((ring: string, ri: number) => {
-                const ringIndex = quadBody.append('div').attr('class', `ring-index ring-${ri}`);
-                ringIndex.append('span').attr('class', 'ring-title').text(ring);
-            })
-        })
-
-        blips.forEach((blip: Blip) => {
-            d3.select(`.qi-${blip.quadrant}`)
-                .select(`.ring-${blip.ring}`)
-                .append('div').text(`${blip.order}. ${blip.name}`)
-
+            currentPage.append('div')
+                .attr('class', 'blip-description')
+                .text(blip.description);
         });
     }
 
@@ -246,7 +247,7 @@ export class RendererV2 {
         return a.quadrant - b.quadrant;
     }
 
-    private createPage(pageNumber: number): HTMLElem<HTMLDivElement> {
+    private createPage(): HTMLElem<HTMLDivElement> {
         return d3.select('body')
             .append('div')
             .attr('class', 'page')
