@@ -1,11 +1,11 @@
 import './styles.scss';
 import * as d3 from "d3";
+import {PieArcDatum} from "d3";
 import {calculateHypotenuse, ringRadius, sanitize, translate} from "./d3helper";
 import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RadarJSON, RingJSON} from "./models/json_types";
 import {Blip, HTMLElem, Point, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
-import {PieArcDatum} from "d3";
 
 export class RendererV2 {
     private readonly c: Config;
@@ -93,6 +93,7 @@ export class RendererV2 {
             .on('mouseover', (_, d: Blip) => this.blipMouseOver.bind(this, d))
             .on('mouseout', this.blipMouseOut.bind(this))
             .attr('text-anchor', 'middle')
+            .attr('class', (b: Blip) => `blip-${b.order}`)
             .style('font-size', '80%')
             .style('font-weight', 'bold')
             .style('cursor', 'pointer')
@@ -187,17 +188,25 @@ export class RendererV2 {
 
     private blipMouseOver(blip: Blip, e: MouseEvent) {
         e.stopImmediatePropagation()
+
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+            scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+
         this.tooltip.text(blip.name);
         const box = this.tooltip.node().getBoundingClientRect();
+        const target = d3.select(`.blip-${blip.order}`) as SVGElem<SVGGraphicsElement>
+        const point = this.root.node().createSVGPoint().matrixTransform(target.node().getScreenCTM());
 
         this.tooltip
             .transition()
-            .style("left", e.pageX - (box.width / 2) + "px")
-            .style("top", e.pageY - box.height - 20 + "px")
-            .style('opacity', 0.8);
+            .style('top', point.y + scrollTop - box.height - 25 + 'px')
+            .style('left', point.x + scrollLeft - (box.width / 2) - 2 + 'px')
+            .style('opacity', 0.8)
+            .style('pointer-events', 'all');
     }
 
     private blipMouseOut() {
         this.tooltip.style('opacity', 0)
+            .style('pointer-events', 'none');
     }
 }
