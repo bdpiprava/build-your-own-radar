@@ -64,9 +64,12 @@
     "@ts-stack/markdown": "^1.4.0",
     "@types/d3": "^7.1.0",
     "@types/express": "^4.17.13",
+    "@types/js-yaml": "^4.0.5",
+    "babel-polyfill": "^6.26.0",
     "chance": "^1.1.8",
     "d3": "^7.3.0",
     "express": "^4.17.2",
+    "js-yaml": "^4.1.0",
     "util": "^0.12.4"
   }
 }

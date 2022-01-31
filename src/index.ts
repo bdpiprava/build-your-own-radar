@@ -1,11 +1,22 @@
 import {RendererV2} from "./renderer_v2";
-import config from "./data/config.json"
 import {Config} from "./models/config";
-import {RadarJSON} from "./models/json_types";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import foo from './data/v2.yaml'
+import {ConfigJSON, RadarJSON} from "./models/json_types";
+import yaml from 'js-yaml'
 
-console.log(foo)
-new RendererV2(new Config(config)).render(foo as RadarJSON)
+renderRadar('/assets/config.json', '/assets/v2.yaml')
+
+function renderRadar(configPath: string, radarPath: string) {
+    fetch(configPath)
+        .then(cr => cr.json())
+        .then((config: ConfigJSON) => {
+            fetch(radarPath).then(async (rr) => {
+                const data = (isYaml(radarPath) ? yaml.load(await rr.text()) : await rr.json()) as RadarJSON
+                new RendererV2(new Config(config)).render(data)
+            })
+        })
+}
+
+function isYaml(radarPath: string) {
+    return radarPath.toLowerCase().endsWith('.yaml') || radarPath.toLowerCase().endsWith('.yml')
+}
 
