@@ -1,4 +1,4 @@
-import {RendererV2} from "./renderer_v2";
+import {Renderer} from "./renderer";
 import {Config} from "./models/config";
 import {ConfigJSON, RadarJSON} from "./models/json_types";
 import yaml from 'js-yaml'
@@ -11,7 +11,7 @@ function renderRadar(configPath: string, radarPath: string) {
         .then((config: ConfigJSON) => {
             fetch(radarPath).then(async (rr) => {
                 const data = (isYaml(radarPath) ? yaml.load(await rr.text()) : await rr.json()) as RadarJSON
-                new RendererV2(new Config(config)).render(data)
+                new Renderer(new Config(config), data).render()
             })
         })
 }

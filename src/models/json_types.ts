@@ -2,8 +2,13 @@ export interface RadarJSON {
     date: string;
     name: string;
     author: string;
-    logo_link: string;
+    logo: LogoJSON;
     quadrants: QuadrantJSON[];
+}
+
+export interface LogoJSON {
+    path: string;
+    onclick_link: string;
 }
 
 export interface QuadrantJSON {

@@ -1,8 +1,11 @@
 ---
 date: 10/12/2021
-name: Tech Radar
+name: The Radar
 author: Spark Networks
-logo_link: ''
+logo:
+  path: '/assets/logo.png'
+  onclick_link: ''
+  
 quadrants:
   - name: Techniques
     rings:
