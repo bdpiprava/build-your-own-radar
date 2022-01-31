@@ -16,12 +16,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Build Gh-Pages
+    - name: Setup node
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Build 🔨
       run: |
         npm install
         npm run build:prod
