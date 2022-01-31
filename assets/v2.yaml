@@ -106,8 +106,8 @@ quadrants:
               This has led to React.js becoming our default choice for JavaScript frameworks.
               
               Adaptation in Spark:
-              1. [UI Components](https://gitlab.affinitas.de/frontend/ui-components)
-              1. [INDY Client](https://gitlab.affinitas.de/clients/indy-client)
+              1. UI Components
+              1. INDY Client
 
           - name: React Hooks
             new: false
