@@ -67,8 +67,8 @@ export class Renderer {
 
         this.plotRingTitles();
         const blips = this.prepareBlipsForRendering();
-        this.plotBlips(blips);
-        this.plotIndex(blips);
+        this.plotBlipsOnRadar(blips);
+        this.plotBlipsDetail(blips);
     }
 
     private renderLogo(data: RadarJSON) {
@@ -83,7 +83,7 @@ export class Renderer {
 
     }
 
-    private plotBlips(data: Blip[]) {
+    private plotBlipsOnRadar(data: Blip[]) {
 
         this.root.selectAll()
             .data(data, (d: Blip) => `${d.quadrant}_${d.ring}_${d.name}`)
@@ -96,6 +96,7 @@ export class Renderer {
             .attr('cy', this.c.MID_Y)
             .on('mouseover', (e, d) => this.blipMouseOver(d, e))
             .on('mouseout', this.blipMouseOut.bind(this))
+            .on('click', this.blipClick)
             .transition()
             .attr('cx', (b: Blip) => b.point.x)
             .attr('cy', (b: Blip) => b.point.y - 4)
@@ -108,6 +109,7 @@ export class Renderer {
             .text((blip: Blip) => blip.order)
             .on('mouseover', (_, d: Blip) => this.blipMouseOver.bind(this, d))
             .on('mouseout', this.blipMouseOut.bind(this))
+            .on('click', this.blipClick)
             .attr('text-anchor', 'middle')
             .attr('class', (b: Blip) => `blip-${b.order}`)
             .style('font-size', '80%')
@@ -233,7 +235,13 @@ export class Renderer {
             .style('pointer-events', 'none');
     }
 
-    private plotIndex(blips: Array<Blip>) {
+    private blipClick(e: MouseEvent, blip: Blip) {
+        document.getElementById(`bi-${blip.order}`).scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    private plotBlipsDetail(blips: Array<Blip>) {
         const maxPageHeight = this.container.node().getBoundingClientRect().width * 1.4142;
         let currentPage: HTMLElem<HTMLDivElement> = this.container;
         let currentQuad = -1;
@@ -261,7 +269,8 @@ export class Renderer {
             }
 
             currentPage.append('div')
-                .attr('class', 'blip-title')
+                .attr('class', `blip-title`)
+                .attr('id', `bi-${blip.order}`)
                 .text(`${blip.order}. ${blip.name}`);
 
             currentPage.append('div')
