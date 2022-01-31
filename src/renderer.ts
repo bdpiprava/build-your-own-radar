@@ -96,7 +96,7 @@ export class Renderer {
             .attr('cy', this.c.MID_Y)
             .on('mouseover', (e, d) => this.blipMouseOver(d, e))
             .on('mouseout', this.blipMouseOut.bind(this))
-            .on('click', this.blipClick)
+            .on('click', Renderer.blipClick)
             .transition()
             .attr('cx', (b: Blip) => b.point.x)
             .attr('cy', (b: Blip) => b.point.y - 4)
@@ -109,7 +109,7 @@ export class Renderer {
             .text((blip: Blip) => blip.order)
             .on('mouseover', (_, d: Blip) => this.blipMouseOver.bind(this, d))
             .on('mouseout', this.blipMouseOut.bind(this))
-            .on('click', this.blipClick)
+            .on('click', Renderer.blipClick)
             .attr('text-anchor', 'middle')
             .attr('class', (b: Blip) => `blip-${b.order}`)
             .style('font-size', '80%')
@@ -235,7 +235,7 @@ export class Renderer {
             .style('pointer-events', 'none');
     }
 
-    private blipClick(e: MouseEvent, blip: Blip) {
+    private static blipClick(e: MouseEvent, blip: Blip) {
         document.getElementById(`bi-${blip.order}`).scrollIntoView({
             behavior: 'smooth'
         });
