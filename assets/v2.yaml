@@ -3,7 +3,7 @@ date: 10/12/2021
 name: The Radar
 author: Spark Networks
 logo:
-  path: './assets/logo.png'
+  path: "./assets/logo.png"
   onclick_link: ''
 
 quadrants:
@@ -149,33 +149,33 @@ quadrants:
 
       - name: hold
         blips:
-        - name: Gulp
-          new: false
-          description: |-
-            Some description about Gulp
-        - name: Bower
-          new: false
-          description: |-
-            Some description about Bower
-        - name: Browserify
-          new: false
-          description: |-
-            Some description about Browserify
-        - name: Karma
-          new: false
-          description: |-
-            Some description about Karma
-        - name: Jasmine
-          new: false
-          description: |-
-            Some description about Jasmine
-        - name: Protractor
-          new: false
-          description: |-
-            Some description about Protractor
-        - name: Chai
-          new: false
-          description: |-
+          - name: Gulp
+            new: false
+            description: |-
+              Some description about Gulp
+          - name: Bower
+            new: false
+            description: |-
+              Some description about Bower
+          - name: Browserify
+            new: false
+            description: |-
+              Some description about Browserify
+          - name: Karma
+            new: false
+            description: |-
+              Some description about Karma
+          - name: Jasmine
+            new: false
+            description: |-
+              Some description about Jasmine
+          - name: Protractor
+            new: false
+            description: |-
+              Some description about Protractor
+          - name: Chai
+            new: false
+            description: |-
               Some description about Chai
 
   - name: Platforms
