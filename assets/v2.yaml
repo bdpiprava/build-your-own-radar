@@ -3,7 +3,7 @@ date: 10/12/2021
 name: The Radar
 author: Spark Networks
 logo:
-  path: '/assets/logo.png'
+  path: './assets/logo.png'
   onclick_link: ''
 
 quadrants:
