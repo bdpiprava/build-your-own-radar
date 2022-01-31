@@ -23,11 +23,8 @@ export class Renderer {
         this.container = Renderer.createPage(this.c.WIDTH);
 
         document.title = radar.name
-        this.container.append('div')
-            .attr('class', 'radar-title')
-            .text(radar.name);
 
-        this.renderLogo(radar);
+        this.renderLogoAndTitle(radar);
 
         this.root = this.container.append('svg').attr('class', 'plane')
             .style('font-family', this.c.FONT.family)
@@ -71,13 +68,20 @@ export class Renderer {
         this.plotBlipsDetail(blips);
     }
 
-    private renderLogo(data: RadarJSON) {
+    private renderLogoAndTitle(data: RadarJSON) {
+        const wrapper = this.container.append('div')
+            .attr('class', 'logo-wrapper');
+
+        wrapper.append('div')
+            .attr('class', 'radar-title')
+            .text(data.name);
+
         if (!data.logo || !data.logo.path) {
             return;
         }
 
         const link = data.logo.onclick_link || "#";
-        this.container.append("div")
+        wrapper.append("div")
             .attr('class', 'logo')
             .html(`<a href="${link}" rel="noopener noreferrer nofollow"><img src="${data.logo.path}" alt="logo"/></a>`);
 

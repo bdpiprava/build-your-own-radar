@@ -1,7 +1,7 @@
 {
   "container_id": "tech_radar",
-  "width": 900,
-  "height": 900,
+  "width": 1100,
+  "height": 1100,
   "blip_size": 12,
   "font": {
     "family": "Inter,Noto Sans SC,sans-serif",

@@ -3,7 +3,7 @@ import {Config} from "./models/config";
 import {ConfigJSON, RadarJSON} from "./models/json_types";
 import yaml from 'js-yaml'
 
-renderRadar('/assets/config.json', '/assets/v2.yaml')
+renderRadar('./assets/config.json', './assets/v2.yaml')
 
 function renderRadar(configPath: string, radarPath: string) {
     fetch(configPath)

@@ -53,7 +53,18 @@ quadrants:
               with [GitHub actions](https://github.com/marketplace/actions/install-cosign) and 
               [Kubernetes](https://github.com/sigstore/helm-charts/tree/main/charts/cosigned) using a Webhook that also 
               allows further integrations in the pipeline.
-
+          - name: Puppeteer
+            new: false
+            description: |-
+              Some description about Puppeteer
+          - name: Storybook
+            new: false
+            description: |-
+              Some description about Storybook
+          - name: Recoil
+            new: false
+            description: |-
+              Some description about Recoil
       - name: adopt
         blips:
           - name: Fastlane
@@ -68,6 +79,104 @@ quadrants:
               new (default) approach revolves around storing the keys and certificates in a Git repository. This not 
               only makes it easier to on-board new team members and set up new development machines; but in our 
               experience, it also is the easiest method to integrate signing into continuous delivery pipelines.
+          - name: Enzyme
+            new: false
+            description: |-
+              Some description about Enzyme
+          - name: Webpack
+            new: false
+            description: |-
+              Some description about Webpack
+          - name: Yarn
+            new: false
+            description: |-
+              Some description about Yarn
+          - name: Sentry
+            new: false
+            description: |-
+              Some description about Sentry
+          - name: Prettier
+            new: false
+            description: |-
+              Some description about Prettier
+          - name: ESLint
+            new: false
+            description: |-
+              Some description about ESLint
+          - name: PostCSS
+            new: false
+            description: |-
+              Some description about PostCSS
+          - name: Sass
+            new: false
+            description: |-
+              Some description about Sass
+          - name: Axios
+            new: false
+            description: |-
+              Some description about Axios
+          - name: i18next
+            new: false
+            description: |-
+              Some description about i18next
+          - name: Autoprefixer
+            new: false
+            description: |-
+              Some description about Autoprefixer    
+
+      - name: trial
+        blips:
+          - name: Cypress
+            new: false
+            description: |-
+              Some description about Cypress
+          - name: Rollup
+            new: false
+            description: |-
+              Some description about Rollup
+          - name: React-spring
+            new: false
+            description: |-
+              Some description about React-spring
+          - name: Husky
+            new: false
+            description: |-
+              Some description about Husky
+          - name: Formik
+            new: false
+            description: |-
+              Some description about Formik
+
+      - name: hold
+        blips:
+        - name: Gulp
+          new: false
+          description: |-
+            Some description about Gulp
+        - name: Bower
+          new: false
+          description: |-
+            Some description about Bower
+        - name: Browserify
+          new: false
+          description: |-
+            Some description about Browserify
+        - name: Karma
+          new: false
+          description: |-
+            Some description about Karma
+        - name: Jasmine
+          new: false
+          description: |-
+            Some description about Jasmine
+        - name: Protractor
+          new: false
+          description: |-
+            Some description about Protractor
+        - name: Chai
+          new: false
+          description: |-
+              Some description about Chai
 
   - name: Platforms
     rings:
@@ -108,6 +217,7 @@ quadrants:
               Adaptation in Spark:
               1. UI Components
               1. INDY Client
+              1. LIITA Client
 
           - name: React Hooks
             new: false
@@ -121,6 +231,44 @@ quadrants:
               and [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext),
               useReducer hooks, along the lines explained in this [blog post](https://blog.logrocket.com/guide-to-react-usereducer-hook/).
 
+          - name: Typescript
+            new: false
+            description: |-
+              [TypeScript](https://www.typescriptlang.org/), a statically typed language and superset of JavaScript, 
+              has become our sensible default. Large-scale projects benefit most from the type safety. Our developers 
+              favor its minimal configuration management, well-integrated IDE support and its ability to refactor code 
+              safely and gradually adopt types. With its [good repository](https://definitelytyped.org/) of TypeScript-type
+              definitions at hand, we benefit from all the rich JavaScript libraries while gaining type safety.
+
+          - name: NodeJS
+            new: false
+            description: |-
+              Some description about NodeJS
+
+          - name: Express
+            new: false
+            description: |-
+              Some description about Express    
+
+          - name: Jest
+            new: false
+            description: |-
+              Some description about Jest
+
+          - name: React Testing Library
+            new: false
+            description: |-
+              Some description about  React Testing Library
+
+          - name: React helmet
+            new: false
+            description: |-
+              Some description about React helmet
+
+          - name: Lodash
+            new: false
+            description: |-
+              Some description about Lodash
       - name: trial
         blips:
           - name: React Query
@@ -134,6 +282,11 @@ quadrants:
               using hooks. As an application developer you simply pass a function that resolves
               your data and leave everything else to the framework. We like that it works
               out-of-the-box but still offers a lot of configuration when needed.
+
+          - name: Svelte
+            new: false
+            description: |-
+              Some description about Svelte    
 
       - name: asses
         blips:
@@ -162,3 +315,14 @@ quadrants:
               combined with the frictionless styling, allows developers to focus more productively
               on the business problem and user experience. Unsurprisingly, Headless UI also
               pairs well with Tailwind CSS classes.
+
+          - name: Next.js
+            new: false
+            description: |-
+              Some description about Next.js
+      - name: hold
+        blips:
+          - name: Angular.js
+            new: false
+            description: |-
+              Some description about Angular.js

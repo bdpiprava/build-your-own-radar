@@ -3,6 +3,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -18,14 +19,21 @@ const config = {
         host: "localhost",
         static: {
             directory: path.resolve(__dirname, './assets'),
-            publicPath: '/assets'
+            publicPath: './assets'
         }
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: "index.html",
         }),
-
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'assets',
+                    to: 'assets'
+                }
+            ]
+        })
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
