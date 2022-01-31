@@ -1,7 +1,17 @@
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+}
+
 body {
   background: #323639;
   margin: auto;
   font-family: 'Source Serif 4', Inter, Noto Sans SC, sans-serif;
+}
+
+p {
+  margin: 0;
 }
 
 .radar-title {
@@ -15,9 +25,8 @@ body {
 .page {
   padding: 50px 75px;
   background: #fff;
-  width: 1240px;
-  height: 1754px;
-  margin: auto auto 25px;
+  margin: auto auto;
+  page-break-after: always;
 
   .quad-title {
     padding: 25px 75px;

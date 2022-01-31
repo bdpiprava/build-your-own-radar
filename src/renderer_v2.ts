@@ -6,6 +6,7 @@ import {Config} from "./models/config";
 import {BlipJSON, QuadrantJSON, RadarJSON, RingJSON} from "./models/json_types";
 import {Blip, HTMLElem, Point, SVGElem} from "./models/types";
 import {PositionFinder} from "./position_finder";
+import {Marked} from '@ts-stack/markdown';
 
 export class RendererV2 {
     private readonly c: Config;
@@ -17,7 +18,7 @@ export class RendererV2 {
 
     constructor(config: Config) {
         this.c = config;
-        this.container = this.createPage();
+        this.container = RendererV2.createPage(this.c.WIDTH);
         this.title = this.container.append('div').attr('class', 'radar-title');
 
         this.root = this.container.append('svg').attr('class', 'plane')
@@ -166,22 +167,23 @@ export class RendererV2 {
 
     private prepareBlipsForRendering(radar: RadarJSON): Array<Blip> {
         const blips = new Array<Blip>()
+
         radar.quadrants.forEach((q: QuadrantJSON) => {
             q.rings.forEach((r: RingJSON) => {
                 r.blips.forEach((b: BlipJSON) => {
                     blips.push({
                         order: blips.length + 1,
                         name: b.name,
-                        quadrant: this.c.QUADRANTS.indexOf(q.name),
-                        ring: this.c.RINGS.indexOf(r.name),
+                        quadrant: this.c.quadrantIndex(q.name),
+                        ring: this.c.RINGS.indexOf(r.name.toLowerCase()),
                         description: b.description,
-                        point: this.positionFinder.findPointOnRing(this.c.QUADRANTS.indexOf(q.name), this.c.RINGS.indexOf(r.name))
+                        point: this.positionFinder.findPointOnRing(this.c.QUADRANTS.indexOf(q.name.toLowerCase()), this.c.RINGS.indexOf(r.name.toLowerCase()))
                     })
                 })
             })
         })
 
-        const sorted = sort(blips, RendererV2.quadrantCompare);
+        const sorted = sort(blips, RendererV2.blipComparator);
         sorted.map((blip: Blip, i: number) => {
             blip.order = i + 1
         });
@@ -214,11 +216,19 @@ export class RendererV2 {
     }
 
     private plotIndex(blips: Array<Blip>) {
-        let currentPage: HTMLElem<HTMLDivElement>;
+        const maxPageHeight = this.container.node().getBoundingClientRect().width * 1.4142;
+        let currentPage: HTMLElem<HTMLDivElement> = this.container;
         let currentQuad = -1;
         blips.forEach((blip: Blip) => {
+            const pBox = currentPage.node().getBoundingClientRect();
             if (blip.quadrant != currentQuad) {
-                currentPage = this.createPage();
+                if (pBox.height < maxPageHeight) {
+                    currentPage.append('div')
+                        .attr('class', 'filler')
+                        .style('height', `${maxPageHeight - (pBox.height)}px`)
+                }
+
+                currentPage = RendererV2.createPage(this.c.WIDTH);
                 currentQuad = blip.quadrant;
 
                 currentPage.append('div')
@@ -226,6 +236,10 @@ export class RendererV2 {
                     .style('background', this.c.blipBackground(blip.quadrant))
                     .style('color', "#fff")
                     .text(this.c.QUADRANTS[blip.quadrant]);
+            }
+
+            if (pBox.height + 80 >= maxPageHeight) {
+                currentPage = RendererV2.createPage(this.c.WIDTH)
             }
 
             currentPage.append('div')
@@ -239,19 +253,24 @@ export class RendererV2 {
 
             currentPage.append('div')
                 .attr('class', 'blip-description')
-                .text(blip.description);
+                .html(Marked.parse(blip.description));
         });
     }
 
-    private static quadrantCompare(a: Blip, b: Blip): number {
-        return a.quadrant - b.quadrant;
+    private static blipComparator(a: Blip, b: Blip): number {
+        return (a.quadrant + a.ring) - (b.quadrant + b.ring);
     }
 
-    private createPage(): HTMLElem<HTMLDivElement> {
-        return d3.select('body')
+    private static createPage(w: number, h?: number): HTMLElem<HTMLDivElement> {
+        const page = d3.select('body')
             .append('div')
             .attr('class', 'page')
-            .style('width', this.c.WIDTH + 'px')
-            .style('height', this.c.WIDTH * 1.4142 + 'px');
+            .style('width', w + 'px')
+
+        if (h != null) {
+            page.style('height', h + 'px');
+        }
+
+        return page
     }
 }

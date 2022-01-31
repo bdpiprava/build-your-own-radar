@@ -1,8 +1,8 @@
 import {ColorJSON, ConfigJSON, FontJSON} from "./json_types";
 import * as d3 from "d3";
 import {PieArcDatum} from "d3";
-import {types} from "sass";
 import {EnvProvider} from "../env_provider";
+
 
 export class Config {
     private readonly envProvider: EnvProvider;
@@ -27,8 +27,8 @@ export class Config {
         this.MID_X = config.width / 2;
         this.MID_Y = config.height / 2;
         this.CONTAINER_ID = config.container_id;
-        this.RINGS = config.rings;
-        this.QUADRANTS = config.quadrants;
+        this.RINGS = config.rings.map((r) => r.toLowerCase());
+        this.QUADRANTS = config.quadrants.map((q) => q.toLowerCase());
         this.colors = config.colors;
         this.FONT = config.font;
         this.BLIP_SIZE = config.blip_size;
@@ -60,5 +60,13 @@ export class Config {
 
     blipBackground(qIdx: number): string {
         return this.colors.blips_background[qIdx]
+    }
+
+    quadrantIndex(name: string) {
+        const index = this.QUADRANTS.indexOf(name.toLowerCase().trim());
+        if (index === -1) {
+            throw Error(`Quadrant ${name} is not configure. Configured quadrants are ${this.QUADRANTS}. Please check your config file.`)
+        }
+        return index;
     }
 }

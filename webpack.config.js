@@ -32,6 +32,11 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.yaml$/,
+                use: 'yaml-loader',
+                type: 'json'
+            },
+            {
                 test: /\.(ts|tsx)$/i,
                 loader: "ts-loader",
                 exclude: ["/node_modules/"],
@@ -55,7 +60,7 @@ const config = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
-    },
+    }
 };
 
 module.exports = () => {
