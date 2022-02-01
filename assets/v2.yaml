@@ -376,7 +376,6 @@ quadrants:
             new: false
             description: |-
               Some description about Angular.js
-
           - name: Python
             new: false
             description: |-
