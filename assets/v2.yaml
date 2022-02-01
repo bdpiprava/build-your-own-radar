@@ -9,6 +9,26 @@ logo:
 quadrants:
   - name: Techniques
     rings:
+      - name: adopt
+        blips:
+          - name: Test Driven Developement(TDD)
+            new: false
+            description: |-
+              Some description about TDD practice
+
+          - name: Agile practices
+            new: false
+            description: |-
+              Some description about Agile practice:
+              1. Pair Programing
+              1. Retrospective
+      - name: trial
+        blips:
+          - name: Behaviour Driven Development(BDD)
+            new: false
+            description: |-
+              Some description about BDD
+
       - name: asses
         blips:
           - name: Four key metrics
@@ -123,7 +143,18 @@ quadrants:
             new: false
             description: |-
               Some description about Autoprefixer    
-
+          - name: DynamoDB
+            new: false
+            description: |-
+              Some description about DynamoDB
+          - name: SQS-SNS
+            new: false
+            description: |-
+              Some description about SQS-SNS
+          - name: RDS
+            new: false
+            description: |-
+              Some description about RDS
       - name: trial
         blips:
           - name: Cypress
@@ -177,7 +208,14 @@ quadrants:
             new: false
             description: |-
               Some description about Chai
-
+          - name: Eureka
+            new: false
+            description: |-
+              Some description about why Eureka is put on hold and what is the alternative
+          - name: Consul
+            new: false
+            description: |-
+              Some description about why Consul is put on hold and what is the alternative
   - name: Platforms
     rings:
       - name: adopt
@@ -269,6 +307,18 @@ quadrants:
             new: false
             description: |-
               Some description about Lodash
+
+          - name: Java
+            new: false
+            description: |-
+              Some description about Java
+
+          - name: Sprint Boot
+            new: false
+            description: |-
+              Some description about Spring Boot
+              
+
       - name: trial
         blips:
           - name: React Query
@@ -326,3 +376,8 @@ quadrants:
             new: false
             description: |-
               Some description about Angular.js
+
+          - name: Python
+            new: false
+            description: |-
+              Some description about why we want to stop using python and what is the alternative
