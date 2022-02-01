@@ -1,0 +1,383 @@
+---
+date: 10/12/2021
+name: The Radar
+author: Spark Networks
+logo:
+  path: "./assets/logo.png"
+  onclick_link: ''
+
+quadrants:
+  - name: Techniques
+    rings:
+      - name: adopt
+        blips:
+          - name: Test Driven Developement(TDD)
+            new: false
+            description: |-
+              Some description about TDD practice
+
+          - name: Agile practices
+            new: false
+            description: |-
+              Some description about Agile practice:
+              1. Pair Programing
+              1. Retrospective
+      - name: trial
+        blips:
+          - name: Behaviour Driven Development(BDD)
+            new: false
+            description: |-
+              Some description about BDD
+
+      - name: asses
+        blips:
+          - name: Four key metrics
+            new: false
+            description: |-
+              To measure software delivery performance, more and more organizations are turning to the four key metrics 
+              as defined by the DORA research program: change lead time, deployment frequency, mean time to restore (MTTR) 
+              and change fail percentage. This research and its statistical analysis have shown a clear link between high 
+              delivery performance and these metrics; they provide a great leading indicator for how a team, or even a 
+              whole delivery organization, is doing. And as with all metrics, we recommend to always keep in mind the 
+              ultimate intention behind a measurement and use them to reflect and learn. For example, before spending 
+              weeks to build up sophisticated dashboard tooling, consider just regularly taking the [DORA quick check](https://cloud.google.com/devops/)
+              in team retrospectives. This gives the team the opportunity to reflect on which capabilities they could 
+              work on to improve their metrics, which can be much more effective than over-detailed out-of-the-box tooling.
+              - **Deployment Frequency**: How often an organization successfully releases to production
+              - **Lead Time for Changes**: The amount of time it takes a commit(PR/MR) to get into production
+              - **Change Failure Rate**: The percentage of deployments causing a failure in production
+              - **Time to Restore Service**: How long it takes an organization to recover from a failure in production
+
+  - name: Tools
+    rings:
+      - name: asses
+        blips:
+          - name: gopass
+            new: false
+            description: |-
+              [gopass](https://www.gopass.pw/) is a password manager for teams, built on GPG and Git. It's a descendant of pass and adds several features, 
+              including interactive search and multiple password stores in a single tree. The biggest issue, though, was scale. 
+              When you have teams with 50+ people using the same repository for several years, we found that the repository 
+              could grow to multiple gigabytes in size. Re-encrypting the secrets when onboarding new members could take more 
+              than half an hour. The underlying issue seems to be that in our teams everything changes all the time: people come and go, 
+              secrets are rotated, the architecture evolves, new secrets are added, old ones are no longer needed. 
+              gopass seems to work well, even for large numbers of users, when there's less change.
+
+          - name: Cosign
+            new: false
+            description: |-
+              [Cosign](https://github.com/sigstore/cosign) is a container signing and verification tool. 
+              Part of Sigstore — a project under the Cloud Native Computing Foundation (CNCF) umbrella aimed at simplifying 
+              software signing and transparency — Cosign supports not only Docker and Open Container Initiative (OCI) 
+              images but also other artifacts that can be stored in a container registry. It currently has integrations 
+              with [GitHub actions](https://github.com/marketplace/actions/install-cosign) and 
+              [Kubernetes](https://github.com/sigstore/helm-charts/tree/main/charts/cosigned) using a Webhook that also 
+              allows further integrations in the pipeline.
+          - name: Puppeteer
+            new: false
+            description: |-
+              Some description about Puppeteer
+          - name: Storybook
+            new: false
+            description: |-
+              Some description about Storybook
+          - name: Recoil
+            new: false
+            description: |-
+              Some description about Recoil
+      - name: adopt
+        blips:
+          - name: Fastlane
+            new: false
+            description: |-
+              Releasing applications for iOS involves a code-signing step. Although supported by Apple's toolchain, the 
+              process can be cumbersome, error prone and full of unexpected surprises. We're happy to report that 
+              [fastlane](https://fastlane.tools/), already our tool of choice for automating the release process of mobile
+              applications, provides a better solution: [match](https://docs.fastlane.tools/actions/match) is integrated
+              into fastlane's smooth process, and it implements a [new approach](https://codesigning.guide/) to manage 
+              code signing for teams. Instead of storing the signing keys in the developer's macOS keychain - the 
+              new (default) approach revolves around storing the keys and certificates in a Git repository. This not 
+              only makes it easier to on-board new team members and set up new development machines; but in our 
+              experience, it also is the easiest method to integrate signing into continuous delivery pipelines.
+          - name: Enzyme
+            new: false
+            description: |-
+              Some description about Enzyme
+          - name: Webpack
+            new: false
+            description: |-
+              Some description about Webpack
+          - name: Yarn
+            new: false
+            description: |-
+              Some description about Yarn
+          - name: Sentry
+            new: false
+            description: |-
+              Some description about Sentry
+          - name: Prettier
+            new: false
+            description: |-
+              Some description about Prettier
+          - name: ESLint
+            new: false
+            description: |-
+              Some description about ESLint
+          - name: PostCSS
+            new: false
+            description: |-
+              Some description about PostCSS
+          - name: Sass
+            new: false
+            description: |-
+              Some description about Sass
+          - name: Axios
+            new: false
+            description: |-
+              Some description about Axios
+          - name: i18next
+            new: false
+            description: |-
+              Some description about i18next
+          - name: Autoprefixer
+            new: false
+            description: |-
+              Some description about Autoprefixer    
+          - name: DynamoDB
+            new: false
+            description: |-
+              Some description about DynamoDB
+          - name: SQS-SNS
+            new: false
+            description: |-
+              Some description about SQS-SNS
+          - name: RDS
+            new: false
+            description: |-
+              Some description about RDS
+      - name: trial
+        blips:
+          - name: Cypress
+            new: false
+            description: |-
+              Some description about Cypress
+          - name: Rollup
+            new: false
+            description: |-
+              Some description about Rollup
+          - name: React-spring
+            new: false
+            description: |-
+              Some description about React-spring
+          - name: Husky
+            new: false
+            description: |-
+              Some description about Husky
+          - name: Formik
+            new: false
+            description: |-
+              Some description about Formik
+
+      - name: hold
+        blips:
+          - name: Gulp
+            new: false
+            description: |-
+              Some description about Gulp
+          - name: Bower
+            new: false
+            description: |-
+              Some description about Bower
+          - name: Browserify
+            new: false
+            description: |-
+              Some description about Browserify
+          - name: Karma
+            new: false
+            description: |-
+              Some description about Karma
+          - name: Jasmine
+            new: false
+            description: |-
+              Some description about Jasmine
+          - name: Protractor
+            new: false
+            description: |-
+              Some description about Protractor
+          - name: Chai
+            new: false
+            description: |-
+              Some description about Chai
+          - name: Eureka
+            new: false
+            description: |-
+              Some description about why Eureka is put on hold and what is the alternative
+          - name: Consul
+            new: false
+            description: |-
+              Some description about why Consul is put on hold and what is the alternative
+  - name: Platforms
+    rings:
+      - name: adopt
+        blips:
+          - name: Sealed Secrets
+            new: false
+            description: |-
+              [Kubernetes](https://kubernetes.io/docs/concepts/configuration/secret) natively supports a key-value object known as a secret. 
+              However, by default, Kubernetes secrets aren't really secrets. They're handled separately from other key-value data so that precautions 
+              or access control can be applied separately. There is support for encrypting secrets before they are stored in etcd, but the secrets start
+              out as plain text fields in configuration files. [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) is a combination operator
+              and command-line utility that uses asymmetric keys to encrypt secrets so that they can only be decrypted by the controller in the cluster. 
+              This process ensures that the secrets won't be compromised while they sit in the configuration files that define a Kubernetes deployment. 
+              Once encrypted, these files can be safely shared or stored alongside other deployment artifacts.
+
+  - name: Languages & Frameworks
+    rings:
+      - name: adopt
+        blips:
+          - name: GoLang
+            new: false
+            description: The [Go language](https://golang.org/) gradually changed its status
+              from "Just Another Language" to a valuable tool in many projects. While steadfastly
+              single paradigm in a world of increasingly complex languages, it seems to
+              keep a nice balance between expressiveness, power, and simplicity.
+
+          - name: React.js
+            new: false
+            description: |-
+              In the avalanche of front-end JavaScript frameworks, [React.js](https://reactjs.org) stands out due to its 
+              design around a reactive data flow. Allowing only one-way data binding greatly simplifies the rendering 
+              logic and avoids many of the issues that commonly plague applications written with other frameworks. 
+              We're seeing the benefits of React.js on a growing number of projects, large and small, while at the same 
+              time we continue to be concerned about the state and the future of other popular frameworks like AngularJS.
+              This has led to React.js becoming our default choice for JavaScript frameworks.
+              
+              Adaptation in Spark:
+              1. UI Components
+              1. INDY Client
+              1. LIITA Client
+
+          - name: React Hooks
+            new: false
+            description: |-
+              [ React Hooks ](https://reactjs.org/docs/hooks-intro.html) has introduced
+              a new approach of managing stateful logic; given React components have always
+              been closer to functions than classes, Hooks have embraced this and brought
+              the state to functions, instead of using classes to take function to the state
+              with methods. Rolling this completely on your own can quickly become tricky;
+              therefore we recommend considering a combination of [React Context](https://reactjs.org/docs/context.html)
+              and [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext),
+              useReducer hooks, along the lines explained in this [blog post](https://blog.logrocket.com/guide-to-react-usereducer-hook/).
+
+          - name: Typescript
+            new: false
+            description: |-
+              [TypeScript](https://www.typescriptlang.org/), a statically typed language and superset of JavaScript, 
+              has become our sensible default. Large-scale projects benefit most from the type safety. Our developers 
+              favor its minimal configuration management, well-integrated IDE support and its ability to refactor code 
+              safely and gradually adopt types. With its [good repository](https://definitelytyped.org/) of TypeScript-type
+              definitions at hand, we benefit from all the rich JavaScript libraries while gaining type safety.
+
+          - name: NodeJS
+            new: false
+            description: |-
+              Some description about NodeJS
+
+          - name: Express
+            new: false
+            description: |-
+              Some description about Express    
+
+          - name: Jest
+            new: false
+            description: |-
+              Some description about Jest
+
+          - name: React Testing Library
+            new: false
+            description: |-
+              Some description about  React Testing Library
+
+          - name: React helmet
+            new: false
+            description: |-
+              Some description about React helmet
+
+          - name: Lodash
+            new: false
+            description: |-
+              Some description about Lodash
+
+          - name: Java
+            new: false
+            description: |-
+              Some description about Java
+
+          - name: Sprint Boot
+            new: false
+            description: |-
+              Some description about Spring Boot
+              
+
+      - name: trial
+        blips:
+          - name: React Query
+            new: false
+            description: |-
+              [React Query](https://react-query.tanstack.com) is often described
+              as the missing data-fetching library for React. Fetching, caching, synchronizing
+              and updating server state is a common requirement in many React applications,
+              and although the requirements are well-understood, getting the implementation
+              right is notoriously difficult. React Query provides a straightforward solution
+              using hooks. As an application developer you simply pass a function that resolves
+              your data and leave everything else to the framework. We like that it works
+              out-of-the-box but still offers a lot of configuration when needed.
+
+          - name: Svelte
+            new: false
+            description: |-
+              Some description about Svelte    
+
+      - name: asses
+        blips:
+          - name: Tailwind CSS
+            new: false
+            description: |-
+              CSS tools and frameworks offer predesigned components for fast
+              results; after a while, however, they can complicate customization. [Tailwind
+              CSS](https://tailwindcss.com/) proposes an interesting approach by providing
+              lower-level utility CSS classes to create building blocks without opinionated
+              styles and aiming for easy customization. The breadth of the low-level utilities
+              allows you to avoid writing any classes or CSS on your own which leads to
+              a more maintainable codebase in the long term. It seems that Tailwind CSS
+              offers the right balance between reusability and customization to create visual
+              components.
+
+          - name: Headless UI
+            new: false
+            description: |-
+              [Headless UI](https://headlessui.dev/) is an unstyled component
+              library for either [React.js](https://www.thoughtworks.com/en-de/radar/languages-and-frameworks/react-js)
+              or [Vue.js](https://www.thoughtworks.com/en-de/radar/languages-and-frameworks/vue-js)
+              from the same people that created [Tailwind CSS](https://www.thoughtworks.com/en-de/radar/languages-and-frameworks/tailwind-css).
+              It is easy to customize and work around the default styles that other component
+              libraries come with. The components' rich functionality and full accessibility,
+              combined with the frictionless styling, allows developers to focus more productively
+              on the business problem and user experience. Unsurprisingly, Headless UI also
+              pairs well with Tailwind CSS classes.
+
+          - name: Next.js
+            new: false
+            description: |-
+              Some description about Next.js
+      - name: hold
+        blips:
+          - name: Angular.js
+            new: false
+            description: |-
+              Some description about Angular.js
+
+          - name: Python
+            new: false
+            description: |-
+              Some description about why we want to stop using python and what is the alternative
